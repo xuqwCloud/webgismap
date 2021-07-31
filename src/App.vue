@@ -74,6 +74,7 @@ body,
 .sys-menu {
     background-color: #545c64;
     width: 64px !important;
+    overflow: hidden !important;
 }
 .sys-content {
     padding: 5px !important;
