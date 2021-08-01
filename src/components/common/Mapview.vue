@@ -6,14 +6,15 @@
 import { loadModules } from 'esri-loader';
 
 const options = {
-    url: 'https://js.arcgis.com/4.20/init.js',
-    css: 'https://js.arcgis.com/4.20/esri/themes/light/main.css',
+    url: 'https://js.arcgis.com/4.18/init.js',
+    css: 'https://js.arcgis.com/4.18/esri/themes/light/main.css',
 };
 
 export default {
     name: 'Mapview',
     components: {},
     mounted: function () {
+        //console.log(this.$store.getters._defaultMapView);
         this._createMapView();
     },
     methods: {
@@ -24,16 +25,16 @@ export default {
                 basemap: 'osm',
             });
 
-            const view = new MapView({
+            const mapView = new MapView({
                 container: 'mapview',
                 map: map,
                 zoom: 10,
                 center: [104.072745, 30.663774],
             });
 
-            view.ui.components = [];
+            mapView.ui.components = [];
 
-            console.log(view);
+            this.$store.commit('_setDefaultMapView', mapView);
         },
     },
 };
