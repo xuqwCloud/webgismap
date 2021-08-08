@@ -2,18 +2,21 @@
     <div class="onemap-page">
         <Mapview />
         <MapTools />
+        <MapTree />
     </div>
 </template>
 
 <script>
 import Mapview from './../components/common/Mapview';
 import MapTools from './../components/MapTools';
+import MapTree from './../components/MapTree';
 
 export default {
     name: 'OneMap',
     components: {
         Mapview,
         MapTools,
+        MapTree,
     },
     methods: {},
 };
