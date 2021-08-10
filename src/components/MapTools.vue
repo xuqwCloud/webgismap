@@ -16,9 +16,10 @@ export default {
             console.log(e.target.id);
             switch (e.target.id) {
                 case 'xzqh':
+                    this.openXZQHPannel();
                     break;
                 case 'maptree':
-                    this.open();
+                    this.openMapTreePannel();
                     break;
                 case 'distance':
                     break;
@@ -30,7 +31,11 @@ export default {
                     break;
             }
         },
-        open() {
+        openXZQHPannel() {
+            let currentVisible = this.$store.getters._getDefaultXZQHVisible;
+            this.$store.commit('_setDefaultXZQHVisible', !currentVisible);
+        },
+        openMapTreePannel() {
             let currentVisible = this.$store.getters._getDefaultMapTreeVisible;
             this.$store.commit('_setDefaultMapTreeVisible', !currentVisible);
         },
