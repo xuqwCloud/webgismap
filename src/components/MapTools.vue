@@ -2,8 +2,21 @@
     <div class="maptools-view">
         <span class="maptools-item" @click="handleMapToolsitemClick" id="xzqh">行政区导航</span>
         <span class="maptools-item" @click="handleMapToolsitemClick" id="maptree">目录树管理</span>
-        <span class="maptools-item" @click="handleMapToolsitemClick" id="distance">距离测量</span>
-        <span class="maptools-item" @click="handleMapToolsitemClick" id="area">面积测量</span>
+        <el-dropdown trigger="click" class="maptools-item" @command="handleCommand">
+            <span class="el-dropdown-link">地图测量<i class="el-icon-arrow-down el-icon--right"></i> </span>
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item icon="el-icon-plus" command="distance">距离测量</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-circle-plus" command="area">面积测量</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
+        <el-dropdown trigger="click" class="maptools-item" @command="handleCommand">
+            <span class="el-dropdown-link">更多功能<i class="el-icon-arrow-down el-icon--right"></i> </span>
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item icon="el-icon-search" command="spacequery">空间查询</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-film" command="morescreen">多屏对比</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-reading" command="swipanalyst">卷帘分析</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
         <span class="maptools-item" @click="handleMapToolsitemClick" id="clear">清屏</span>
     </div>
 </template>
@@ -13,7 +26,6 @@ export default {
     name: 'MapTools',
     methods: {
         handleMapToolsitemClick(e) {
-            console.log(e.target.id);
             switch (e.target.id) {
                 case 'xzqh':
                     this.openXZQHPannel();
@@ -21,11 +33,23 @@ export default {
                 case 'maptree':
                     this.openMapTreePannel();
                     break;
+                case 'clear':
+                    break;
+                default:
+                    break;
+            }
+        },
+        handleCommand(command) {
+            switch (command) {
                 case 'distance':
                     break;
                 case 'area':
                     break;
-                case 'clear':
+                case 'spacequery':
+                    break;
+                case 'morescreen':
+                    break;
+                case 'swipanalyst':
                     break;
                 default:
                     break;
@@ -56,7 +80,11 @@ export default {
     line-height: 30px;
     margin-left: 15px;
     color: black;
+    font-size: 15px;
     cursor: pointer;
+}
+.maptools-item:hover {
+    color: #409eff;
 }
 .maptools-item:first-child {
     margin-left: 0;
