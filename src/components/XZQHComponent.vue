@@ -272,7 +272,7 @@ export default {
     color: #409eff;
 }
 
-tr {
+.XZQHComponent-pannel tr {
     display: block; /*将tr设置为块体元素*/
     margin-bottom: 15px; /*设置tr间距为15px*/
 }
