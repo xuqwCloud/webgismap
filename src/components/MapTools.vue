@@ -31,7 +31,52 @@ const options = {
 
 export default {
     name: 'MapTools',
+    mounted: function () {
+        const checkView = setInterval(() => {
+            if (this.$store.getters._getDefaultMapView) {
+                this._initSketchTool();
+                clearInterval(checkView);
+            }
+        }, 200);
+    },
     methods: {
+        //初始化绘制工具
+        async _initSketchTool() {
+            const _self = this;
+            const view = _self.$store.getters._getDefaultMapView;
+            //1、绘制面状区域
+            const [SketchViewModel, GraphicsLayer] = await loadModules(
+                ['esri/widgets/Sketch/SketchViewModel', 'esri/layers/GraphicsLayer'],
+                options,
+            );
+
+            const resultLayer = view.map.findLayerById('polygonGraphicLayer');
+            if (resultLayer) view.map.remove(resultLayer);
+
+            _self.graphicsLayer = new GraphicsLayer({
+                id: 'polygonGraphicLayer',
+                elevationInfo: {
+                    mode: 'on-the-ground',
+                },
+            });
+            view.map.add(_self.graphicsLayer);
+
+            const polygonSymbol = {
+                type: 'simple-fill',
+                color: 'rgba(216,30,6, 0.4)',
+                style: 'solid',
+                outline: {
+                    color: '#d81e06',
+                    width: 1,
+                },
+            };
+            _self.sketchViewModel = new SketchViewModel({
+                updateOnGraphicClick: false,
+                view,
+                layer: _self.graphicsLayer,
+                polygonSymbol,
+            });
+        },
         handleMapToolsitemClick(e) {
             switch (e.target.id) {
                 case 'xzqh':
@@ -74,49 +119,17 @@ export default {
         //初始化空间查询
         async initSpaceQuery() {
             const _self = this;
-            const view = _self.$store.getters._getDefaultMapView;
-            //1、绘制面状区域
-            const [SketchViewModel, Graphic, GraphicsLayer] = await loadModules(
-                ['esri/widgets/Sketch/SketchViewModel', 'esri/Graphic', 'esri/layers/GraphicsLayer'],
-                options,
-            );
+            const [Graphic] = await loadModules(['esri/Graphic'], options);
+            _self.sketchViewModel.create('polygon');
 
-            const resultLayer = view.map.findLayerById('polygonGraphicLayer');
-            if (resultLayer) view.map.remove(resultLayer);
-
-            const graphicsLayer = new GraphicsLayer({
-                id: 'polygonGraphicLayer',
-                elevationInfo: {
-                    mode: 'on-the-ground',
-                },
-            });
-            view.map.add(graphicsLayer);
-
-            const polygonSymbol = {
-                type: 'simple-fill',
-                color: 'rgba(216,30,6, 0.4)',
-                style: 'solid',
-                outline: {
-                    color: '#d81e06',
-                    width: 1,
-                },
-            };
-            var sketchViewModel = new SketchViewModel({
-                updateOnGraphicClick: false,
-                view,
-                layer: graphicsLayer,
-                polygonSymbol,
-            });
-            sketchViewModel.create('polygon');
-
-            sketchViewModel.on('create-complete', function (event) {
+            _self.sketchViewModel.on('create-complete', function (event) {
                 const graphic = new Graphic({
                     geometry: event.geometry,
-                    symbol: sketchViewModel.graphic.symbol,
+                    symbol: _self.sketchViewModel.graphic.symbol,
                 });
-                graphicsLayer.add(graphic);
+                _self.graphicsLayer.add(graphic);
             });
-            sketchViewModel.on('create', function (event) {
+            _self.sketchViewModel.on('create', function (event) {
                 if (event.state === 'complete') {
                     // console.log(graphicsLayer);
                     // console.log(event);

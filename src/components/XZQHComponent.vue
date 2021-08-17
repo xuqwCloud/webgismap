@@ -70,7 +70,7 @@ export default {
             const _self = this;
             const [QueryTask, Query] = await loadModules(['esri/tasks/QueryTask', 'esri/tasks/support/Query'], options);
             const queryTask = new QueryTask({
-                url: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHProvince_WebMokatuo/FeatureServer/0',
+                url: 'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHProvince_WebMokatuo/FeatureServer/0',
             });
             let query = new Query();
             query.returnGeometry = false;
@@ -105,7 +105,7 @@ export default {
             const provinceCode = value.toString().substring(0, 2);
             const [QueryTask, Query] = await loadModules(['esri/tasks/QueryTask', 'esri/tasks/support/Query'], options);
             const queryTask = new QueryTask({
-                url: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCity_WebMokatuo/FeatureServer/0',
+                url: 'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHCity_WebMokatuo/FeatureServer/0',
             });
             let query = new Query();
             query.returnGeometry = false;
@@ -127,7 +127,7 @@ export default {
                     currentCityData.map(async (item2) => {
                         const cityCode = item2.value.toString().substring(0, 4);
                         const queryTask2 = new QueryTask({
-                            url: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCounty_WebMokatuo/FeatureServer/0',
+                            url: 'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHCounty_WebMokatuo/FeatureServer/0',
                         });
                         let query2 = new Query();
                         query2.returnGeometry = false;
@@ -156,11 +156,11 @@ export default {
             if (type === 'city') {
                 code = val.toString().substring(0, 4);
                 serverUrl =
-                    'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCity_WebMokatuo/FeatureServer/0';
+                    'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHCity_WebMokatuo/FeatureServer/0';
             } else if (type === 'county') {
                 code = val.toString().substring(0, 6);
                 serverUrl =
-                    'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCounty_WebMokatuo/FeatureServer/0';
+                    'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHCounty_WebMokatuo/FeatureServer/0';
             }
             const [QueryTask, Query, Graphic] = await loadModules(
                 ['esri/tasks/QueryTask', 'esri/tasks/support/Query', 'esri/Graphic'],

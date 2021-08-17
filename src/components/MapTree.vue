@@ -45,19 +45,19 @@ export default {
                             label: '省数据',
                             layerid: 'layerid',
                             layerurl:
-                                'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHProvince_WebMokatuo/FeatureServer',
+                                'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHProvince_WebMokatuo/FeatureServer',
                         },
                         {
                             label: '市数据',
                             layerid: 'layerid',
                             layerurl:
-                                'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCity_WebMokatuo/FeatureServer',
+                                'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHCity_WebMokatuo/FeatureServer',
                         },
                         {
                             label: '县数据',
                             layerid: 'layerid',
                             layerurl:
-                                'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCounty_WebMokatuo/FeatureServer',
+                                'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHCounty_WebMokatuo/FeatureServer',
                         },
                     ],
                 },
@@ -68,13 +68,13 @@ export default {
                             label: '火车站数据 84',
                             layerid: 'layerid',
                             layerurl:
-                                'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/trainstationdata/FeatureServer',
+                                'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/trainstationdata/FeatureServer',
                         },
                         {
                             label: '火车站数据 Mekatuo',
                             layerid: 'layerid',
                             layerurl:
-                                'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/trainstation_WebMokatuo/FeatureServer',
+                                'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/trainstation_WebMokatuo/FeatureServer',
                         },
                     ],
                 },
