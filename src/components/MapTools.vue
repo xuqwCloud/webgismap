@@ -119,7 +119,19 @@ export default {
         //初始化空间查询
         async initSpaceQuery() {
             const _self = this;
-            const [Graphic] = await loadModules(['esri/Graphic'], options);
+            const view = _self.$store.getters._getDefaultMapView;
+            const [Graphic, GraphicsLayer] = await loadModules(['esri/Graphic', 'esri/layers/GraphicsLayer'], options);
+
+            const resultLayer = view.map.findLayerById('polygonGraphicLayer');
+            if (resultLayer) view.map.remove(resultLayer);
+            _self.graphicsLayer = new GraphicsLayer({
+                id: 'polygonGraphicLayer',
+                elevationInfo: {
+                    mode: 'on-the-ground',
+                },
+            });
+            view.map.add(_self.graphicsLayer);
+
             _self.sketchViewModel.create('polygon');
 
             _self.sketchViewModel.on('create-complete', function (event) {
