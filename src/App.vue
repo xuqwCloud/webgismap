@@ -77,4 +77,9 @@ body,
 .sys-content {
     padding: 5px !important;
 }
+
+.morescreen-view {
+    width: 100%;
+    height: 820px;
+}
 </style>
