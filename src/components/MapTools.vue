@@ -15,6 +15,7 @@
                 <el-dropdown-item icon="el-icon-search" command="spacequery">空间查询</el-dropdown-item>
                 <el-dropdown-item icon="el-icon-film" command="morescreen">多屏对比</el-dropdown-item>
                 <el-dropdown-item icon="el-icon-reading" command="swipanalyst">卷帘分析</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-reading" command="printmap">地图打印</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
         <span class="maptools-item" @click="handleMapToolsitemClick" id="clear">清屏</span>
@@ -86,6 +87,7 @@ export default {
                     this.openMapTreePannel();
                     break;
                 case 'clear':
+                    this.handleClearMap();
                     break;
                 default:
                     break;
@@ -94,8 +96,10 @@ export default {
         handleCommand(command) {
             switch (command) {
                 case 'distance':
+                    this.initDistanceMap();
                     break;
                 case 'area':
+                    this.initAreaMap();
                     break;
                 case 'spacequery':
                     this.initSpaceQuery();
@@ -104,6 +108,10 @@ export default {
                     this.$router.push('/onemap/one');
                     break;
                 case 'swipanalyst':
+                    this._initSwipe();
+                    break;
+                case 'printmap':
+                    this.handlePrintMap();
                     break;
                 default:
                     break;
@@ -116,6 +124,28 @@ export default {
         openMapTreePannel() {
             let currentVisible = this.$store.getters._getDefaultMapTreeVisible;
             this.$store.commit('_setDefaultMapTreeVisible', !currentVisible);
+        },
+        //地图距离量算
+        async initDistanceMap() {
+            const _self = this;
+            const view = _self.$store.getters._getDefaultMapView;
+            const [DistanceMeasurement2D] = await loadModules(['esri/widgets/DistanceMeasurement2D'], options);
+            if (this.measurementWidget) this.measurementWidget.destroy();
+            this.measurementWidget = new DistanceMeasurement2D({
+                view: view,
+            });
+            view.ui.add(this.measurementWidget, 'top-left');
+        },
+        //地图面积量算
+        async initAreaMap() {
+            const _self = this;
+            const view = _self.$store.getters._getDefaultMapView;
+            const [AreaMeasurement2D] = await loadModules(['esri/widgets/AreaMeasurement2D'], options);
+            if (this.measurementWidget) this.measurementWidget.destroy();
+            this.measurementWidget = new AreaMeasurement2D({
+                view: view,
+            });
+            view.ui.add(this.measurementWidget, 'top-left');
         },
         //初始化空间查询
         async initSpaceQuery() {
@@ -298,6 +328,78 @@ export default {
             }
 
             return _self.geoData;
+        },
+        //卷帘分析
+        async _initSwipe() {
+            const _self = this;
+            const view = _self.$store.getters._getDefaultMapView;
+            const [Swipe] = await loadModules(['esri/widgets/Swipe'], options);
+            const topLayer = view.map.findLayerById('swipeLayerTop');
+            const bottomLayer = view.map.findLayerById('swipeLayerBottom');
+            if (topLayer && bottomLayer) {
+                _self.swipe = new Swipe({
+                    leadingLayers: [topLayer],
+                    trailingLayers: [bottomLayer],
+                    position: 35,
+                    view: view,
+                });
+
+                view.ui.add(_self.swipe);
+            } else {
+                _self.$message({
+                    message: '请添加至少两张业务图层',
+                    type: 'warning',
+                });
+                return;
+            }
+        },
+        //地图打印
+        async handlePrintMap() {
+            const _self = this;
+            const view = _self.$store.getters._getDefaultMapView;
+            const [PrintTask, PrintTemplate, PrintParameters] = await loadModules(
+                ['esri/tasks/PrintTask', 'esri/tasks/support/PrintTemplate', 'esri/tasks/support/PrintParameters'],
+                options,
+            );
+            let printTask = new PrintTask({
+                url: 'https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
+            });
+
+            let template = new PrintTemplate({
+                format: 'pdf',
+                exportOptions: {
+                    dpi: 100,
+                },
+                layout: 'a4-portrait',
+                layoutOptions: {
+                    titleText: '地图出图demo',
+                    authorText: 'X北辰北',
+                    customTextElements: [{ location: '四川省 成都市' }, { date: '08/11/2021, 08:20:20 AM' }],
+                },
+            });
+
+            let params = new PrintParameters({
+                view: view,
+                template: template,
+            });
+
+            printTask.execute(params).then((printResult, printError) => {
+                console.log(printResult, printError);
+                if (printResult.url) window.open(printResult.url);
+                if (printError) this.$message.error('地图打印失败');
+            });
+        },
+        //清屏
+        handleClearMap() {
+            const view = this.$store.getters._getDefaultMapView;
+            const resultLayer1 = view.map.findLayerById('swipeLayerTop');
+            const resultLayer2 = view.map.findLayerById('swipeLayerBottom');
+            const resultLayer3 = view.map.findLayerById('layerid');
+            if (resultLayer1) view.map.remove(resultLayer1);
+            if (resultLayer2) view.map.remove(resultLayer2);
+            if (resultLayer3) view.map.remove(resultLayer3);
+            if (this.swipe) this.swipe.destroy();
+            if (this.measurementWidget) this.measurementWidget.destroy();
         },
     },
 };

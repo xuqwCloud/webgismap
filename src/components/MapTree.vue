@@ -76,6 +76,18 @@ export default {
                             layerurl:
                                 'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/trainstation_WebMokatuo/FeatureServer',
                         },
+                        {
+                            label: '卷帘分析 top',
+                            layerid: 'swipeLayerTop',
+                            layerurl:
+                                'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHProvince_WebMokatuo/FeatureServer',
+                        },
+                        {
+                            label: '卷帘分析 bottom',
+                            layerid: 'swipeLayerBottom',
+                            layerurl:
+                                'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHCity_WebMokatuo/FeatureServer',
+                        },
                     ],
                 },
             ],
