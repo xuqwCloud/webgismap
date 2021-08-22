@@ -10,11 +10,7 @@
 
 <script>
 import { loadModules } from 'esri-loader';
-
-const options = {
-    url: 'https://js.arcgis.com/4.18/init.js',
-    css: 'https://js.arcgis.com/4.18/esri/themes/light/main.css',
-};
+import config from './config';
 
 export default {
     name: 'MapTree',
@@ -109,7 +105,7 @@ export default {
                 //处理不同服务类型
                 const [TileLayer, FeatureLayer] = await loadModules(
                     ['esri/layers/TileLayer', 'esri/layers/FeatureLayer'],
-                    options,
+                    config.options,
                 );
                 const c = data.layerurl.split('/');
                 const serverType = c[c.length - 1];

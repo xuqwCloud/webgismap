@@ -43,11 +43,7 @@
 
 <script>
 import { loadModules } from 'esri-loader';
-
-const options = {
-    url: 'https://js.arcgis.com/4.18/init.js',
-    css: 'https://js.arcgis.com/4.18/esri/themes/light/main.css',
-};
+import config from './config';
 
 let graphic = '';
 
@@ -68,7 +64,10 @@ export default {
         //获取行政区划 省份数据
         async getProvinceData() {
             const _self = this;
-            const [QueryTask, Query] = await loadModules(['esri/tasks/QueryTask', 'esri/tasks/support/Query'], options);
+            const [QueryTask, Query] = await loadModules(
+                ['esri/tasks/QueryTask', 'esri/tasks/support/Query'],
+                config.options,
+            );
             const queryTask = new QueryTask({
                 url: 'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHProvince_WebMokatuo/FeatureServer/0',
             });
@@ -103,7 +102,10 @@ export default {
         async getCityAndCountyData(value) {
             const _self = this;
             const provinceCode = value.toString().substring(0, 2);
-            const [QueryTask, Query] = await loadModules(['esri/tasks/QueryTask', 'esri/tasks/support/Query'], options);
+            const [QueryTask, Query] = await loadModules(
+                ['esri/tasks/QueryTask', 'esri/tasks/support/Query'],
+                config.options,
+            );
             const queryTask = new QueryTask({
                 url: 'https://services3.arcgis.com/U26uBjSD32d7xvm2/arcgis/rest/services/XZQHCity_WebMokatuo/FeatureServer/0',
             });
@@ -164,7 +166,7 @@ export default {
             }
             const [QueryTask, Query, Graphic] = await loadModules(
                 ['esri/tasks/QueryTask', 'esri/tasks/support/Query', 'esri/Graphic'],
-                options,
+                config.options,
             );
             const queryTask = new QueryTask({
                 url: serverUrl,
