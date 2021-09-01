@@ -1,8 +1,9 @@
 var express = require('express');
 var app = express();
+var home = require('./routers/home');
+var user = require('./routers/user');
 
-app.get('/test', function (req, res) {
-    res.send('hello world 1');
-});
+app.use('/', home);
+app.use('/user', user);
 
 app.listen(3001);
