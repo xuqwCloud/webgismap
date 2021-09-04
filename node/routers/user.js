@@ -6,6 +6,7 @@ var pgConfig = "postgres://postgres:webgis@localhost:5432/webgis";
 
 //获取用户信息接口
 router.get('/get', function (req, res) {
+    var name = req.query.name;
     var client = new pg.Client(pgConfig);
     client.connect(function (isErr) {
         if (isErr) {
@@ -13,7 +14,7 @@ router.get('/get', function (req, res) {
             client.end();
             return;
         };
-        client.query('SELECT * FROM "user" WHERE name = $1', ['张三'], function (isErr, rst) {
+        client.query('SELECT * FROM "user" WHERE name = $1', [name], function (isErr, rst) {
             if (isErr) {
                 console.log('query error:' + isErr.message);
                 res.send({
@@ -34,6 +35,10 @@ router.get('/get', function (req, res) {
 
 //用户注册接口
 router.post('/insert', function (req, res) {
+    var name = req.body.name;
+    var psd = req.body.psd;
+    var phone = req.body.phone;
+    var email = req.body.email;
     var client = new pg.Client(pgConfig);
     client.connect(function (isErr) {
         if (isErr) {
@@ -41,7 +46,7 @@ router.post('/insert', function (req, res) {
             client.end();
             return;
         };
-        client.query('INSERT INTO "user" (name, psd, phone, email) VALUES ($1, $2, $3, $4);', ['test02', 'webgis', '111', '111@qq.com'], function (isErr, rst) {
+        client.query('INSERT INTO "user" (name, psd, phone, email) VALUES ($1, $2, $3, $4);', [name, psd, phone, email], function (isErr, rst) {
             if (isErr) {
                 console.log('query error:' + isErr.message);
                 res.send({
